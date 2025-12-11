@@ -1,0 +1,82 @@
+PROJECT STRUCTURE & FILE EXPLANATION (VIVA GUIDE)
+===================================================
+
+This document explains the purpose of each file in your AI Chatbot project. Use this to answer questions during your viva.
+
+--- 1. CORE APPLICATION ---
+
+[ app.py ]
+- PURPOSE: The main backend server file. 
+- WHAT IT DOES: 
+  1. Initializes the Flask web server.
+  2. Connects to Google's Gemini API using your API key.
+  3. Defines "Routes" (URL endpoints):
+     - `/`: Serves the webpage.
+     - `/api/chat`: Receives messages from the frontend, sends them to Gemini, and returns the AI's response (or generated image).
+     - `/api/history`: Fetches past conversation logs.
+     - `/api/usage`: Checks if the daily query limit is reached.
+- key VIVA POINT: "This is the brain of the web application. It handles all the logic and communication between the user's browser, the server, and the Google AI."
+
+[ templates/index.html ]
+- PURPOSE: The structure of the user interface (Frontend).
+- WHAT IT DOES: Defines the HTML layout—where the chat window is, where the input box is, the sidebar, the microphone button, etc.
+- KEY VIVA POINT: "This file provides the skeleton of the website using HTML5 semantic tags."
+
+[ static/style.css ]
+- PURPOSE: The styling and design.
+- WHAT IT DOES: Controls the colors (Dark Mode), fonts (Inter/Roboto), animations (pulsing microphone), and layout (Flexbox).
+- KEY VIVA POINT: "This CSS file makes the application look modern and premium. It handles responsiveness so the app works on different screen sizes."
+
+[ static/script.js ]
+- PURPOSE: The interactivity and client-side logic.
+- WHAT IT DOES:
+  1. "Listens" for button clicks (Send, Microphone, Image Upload).
+  2. Uses the `fetch` API to send data to your backend (`app.py`) without reloading the page (AJAX).
+  3. Uses the **Web Speech API** to convert your voice into text directly in the browser.
+- KEY VIVA POINT: "This JavaScript file bridges the gap between the HTML UI and the Flask backend. It handles dynamic updates like showing new messages instantly."
+
+--- NEW FEATURES (HYBRID AI) ---
+
+[ data/intents.json ]
+- PURPOSE: The knowledge base for the Local AI.
+- WHAT IT DOES: Defines patterns (what user says) and responses (what bot says) for simple queries like "Hello", "Time", "Date".
+
+[ legacy/train_chatbot.py ]
+- PURPOSE: The training script for the Local AI.
+- WHAT IT DOES: Uses **NumPy** to build and train a custom Neural Network from scratch (no heavy libraries like TensorFlow). It saves the mathematical weights to `data/chatbot_model.pkl`.
+- KEY VIVA POINT: "I implemented a Neural Network from scratch using pure mathematics (NumPy) to handle basic queries locally. This makes the system faster and reduces API costs."
+
+[ app.py (Hybrid Logic) ]
+- UPDATE: The `chat()` function now has a 2-step process:
+  1. **Local Check**: It runs the user's input through your custom NumPy model. If confidence is high (>70%), it responds instantly.
+  2. **Dynamic Handling**: If the intent is "time" or "date", Python calculates the exact current system time/date.
+  3. **Cloud Fallback**: If the Local AI is unsure, it sends the request to Google Gemini.
+
+--- 2. DATA STORAGE (data/ folder) ---
+
+[ data/usage_tracker.json ]
+- PURPOSE: Persistent storage for daily limits.
+- WHAT IT DOES: Saves the current date and the number of queries made today.
+- KEY VIVA POINT: "A simple JSON database to ensure users don't exceed the daily quota."
+
+[ data/feedback_log.txt ]
+- PURPOSE: Logs for user satisfaction.
+- WHAT IT DOES: Appends every feedback rating and comment to a text file.
+- KEY VIVA POINT: "A log file that stores user feedback for future analysis."
+
+--- 3. LEGACY FILES (legacy/ folder) ---
+
+[ legacy/aichatbot.py ]
+- PURPOSE: The original Desktop Application.
+- WHAT IT DOES: This was the first version of the project built using `tkinter`. It is no longer used but kept for reference.
+
+[ legacy/train_chatbot.py ]
+- PURPOSE: A script for training a custom neural network.
+- WHAT IT DOES: This file uses TensorFlow/Keras to train a simple chatbot model on `intents.json`. 
+- CONTEXT: You are currently using **Gemini (Generative AI)**, so this training script is technically not needed for the main app anymore, but shows you know how to build custom models too.
+
+--- 4. VIRTUAL ENVIRONMENT ---
+
+[ ai_gui_env/ ]
+- PURPOSE: Isolated Python environment.
+- WHAT IT DOES: Contains all the installed libraries (Flask, google-genai, etc.) specific to this project so they don't conflict with other projects on your computer.
