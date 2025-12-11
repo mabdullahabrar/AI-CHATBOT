@@ -27,7 +27,7 @@ ACCENT_COLOR = "#00FF7F"    # Bright Spring Green for the button
 
 
 # --- Configuration ---
-API_KEY = "Enter your api key" 
+API_KEY = "Enter you api here" 
 MAX_DAILY_QUERIES = 200  
 USAGE_FILE = 'usage_tracker.json'
 model_name = 'gemini-2.5-flash'

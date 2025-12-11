@@ -14,7 +14,7 @@ import io
 import base64
 
 # --- Configuration ---
-API_KEY = "Enter your api key"
+API_KEY = "Enter you api here"
 MAX_DAILY_QUERIES = 200
 USAGE_FILE = 'data/usage_tracker.json'
 FEEDBACK_FILE = 'data/feedback_log.txt'
